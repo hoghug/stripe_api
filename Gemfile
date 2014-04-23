@@ -11,6 +11,7 @@ gem 'foundation-rails'
 gem 'bcrypt'
 gem 'rghost'
 gem 'devise'
+gem 'stripe'
 
 group :development do
   gem 'better_errors'
