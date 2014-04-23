@@ -1,63 +1,101 @@
 <div class="row">
-  <div class="large-6 columns">
+  <div id="charity-info" class="large-12 columns">
     <h2><%= @charity.name %></h2>
-
     <p><%= @charity.description %></p>
+  </div>
+</div>
 
-    <h3>Make a Donation to <%= @charity.name %></h3>
 
-    <%= form_for [@charity, @donation] do |f| %>
-      <span class="payment-errors"></span>
-      <%= f.label :amount %>
-      <%= f.number_field :amount %>
+<div class="row">
+  <div class="large-12 columns">
+    <dl class="tabs" data-tab>
+      <dd class="active"><a href="#contribute">Contribute</a></dd>
+      <dd><a href="#donations">Donations</a></dd>
+      <dd><a href="#subscriptions">Subscription Plans</a></dd>
+    </dl>
 
-      <label>
-        Card Number
-        <input type="text" size="20" data-stripe="number"/>
-      </label>
+    <div class="tabs-content">
+      <div class="content active" id="contribute">
+        <div class="row">
+          <div class="large-8 columns">
+            <h3>Make a Donation to <%= @charity.name %></h3>
 
-      <div class="row">Expiration (MM/YYYY)</div>
+            <%= form_for [@charity, @donation] do |f| %>
+              <span class="payment-errors"></span>
+              <%= f.label :amount %>
+              <%= f.number_field :amount %>
 
-      <div class="row">
-          <div class="large-4 columns" >
-            <input type="text" size="2" data-stripe="exp-month"/>
+              <label>
+                Card Number
+                <input type="text" size="20" data-stripe="number"/>
+              </label>
+
+              <label>Card Expiration</label>
+              <div class="row">
+                <div class="large-4 columns" >
+                  <div class="row">
+                      <div class="large-6 columns" >
+                        <input type="text" size="2" data-stripe="exp-month" placeholder="MM" />
+                      </div>
+                      <div class="large-6 columns" >
+                        <input type="text" size="4" data-stripe="exp-year" placeholder="YYYY" />
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <%= f.submit 'Submit', id: 'submit-btn', class: "button tiny" %>
+            <% end %>
           </div>
-          <div class="large-4 columns" >
-            <input type="text" size="4" data-stripe="exp-year"/>
-          </div>
+        </div>
       </div>
 
+      <div class="content" id="donations">
+        <div class="row">
+          <div class="large-12 columns">
 
+            <h4>Total Money Raised: <span>$<%= @charity.donations.sum(:amount) %></span></h4>
+            <% @charity.donations.each do |donation| %>
+              <div class="donation-stack" style="height:<%= donation.amount %>px;">
+                <%= donation.amount %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
-      <%= f.submit 'Submit', id: 'submit-btn', class: "button tiny" %>
-    <% end %>
-  </div>
+      <div class="content" id="subscriptions">
+        <div class="row">
+          <div class="large-4 columns">
+            <h4>Subscription Plans</h4>
+            <ul><% @plans.each do |plan| %>
+              <li><%= plan.name %> - $<%= plan.amount.to_i %>/<%= plan.interval %></li>
+            <% end %>
+            </ul>
+            <a href="#" id="new-plan-btn" class="button tiny">+ Add Plan</a>
+            <div class="panel" id="new-plan">
+              <%= form_for [@charity, @plan] do |f| %>
+                <%= f.label :name %>
+                <%= f.text_field :name %>
 
-  <div class="large-4 columns">
-    <h4>Previous Donations</h4>
-    <% @charity.donations.each do |donation| %>
-      <%= donation.amount %>
-    <% end %>
-  </div>
+                <%= f.label :amount %>
+                <%= f.text_field :amount %>
 
-  <div class="large-4 columns">
-    <h4>Add Donation Plan</h4>
-    <%= form_for [@charity, @plan] do |f| %>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
+                <%= f.label :interval %>
+                <%= f.select :interval, options_for_select([['Monthly', 'month'], ['Yearly', 'year'], ['Weekly', 'week']]) %>
 
-      <%= f.label :amount %>
-      <%= f.text_field :amount %>
+                <%= f.submit 'Submit', class: 'button tiny' %>
+              <% end %>
+            </div>
 
-      <%= f.label :interval %>
-      <%= f.select :interval, options_for_select([['Monthly', 'month'], ['Yearly', 'year'], ['Weekly', 'week']]) %>
+          </div>
+        </div>
+      </div>
 
-      <%= f.submit 'Submit', class: 'button tiny' %>
-    <% end %>
-
-  </div>
+    </div>
 
 </div>
+
 
 
 

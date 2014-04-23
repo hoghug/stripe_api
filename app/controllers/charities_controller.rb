@@ -22,6 +22,7 @@ class CharitiesController < ApplicationController
     @charity = Charity.find(params[:id])
     @donation = Donation.new
     @plan = Plan.new
+    @plans = Plan.all
   end
 
   def destroy

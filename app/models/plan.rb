@@ -5,10 +5,9 @@ class Plan < ActiveRecord::Base
   after_save :slugger
 
   def stripe_plan_maker
-    Stripe.api_key = "sk_test_bceBiIJnWmhSU4bpJa5z4vcP"
-
+    Stripe.api_key = 'sk_test_bceBiIJnWmhSU4bpJa5z4vcP'
     Stripe::Plan.create(
-      :amount => (self.amount*100).to_i,
+      :amount => self.amount * 100,
       :interval => self.interval,
       :name => self.name,
       :currency => 'usd',

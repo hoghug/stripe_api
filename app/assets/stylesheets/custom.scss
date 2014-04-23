@@ -1,0 +1,68 @@
+$purple: #332F45;
+$blue: #015770;
+$dk-green: #2A8782;
+$lt-green: #9FD6AE;
+$pale: #FFFED2;
+
+html, body, div, img, span, h1, h2, h3, h4, p, ol, ul, li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: left;
+  font-weight: normal;
+  vertical-align: baseline;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+li {list-style-position: inside;}
+
+.clear {clear:both}
+
+body {
+  font-family: 'Coda', 'cursive';
+  background-color: $purple;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Coda', 'cursive';
+}
+
+h1, h2 {
+  color: $blue;
+
+}
+
+.container {
+  margin:65px auto 0 auto;
+  padding: 3% 2%;
+  width: 80%;
+  background-color: $pale;
+}
+
+
+#charity-info {
+  margin:0 0 30px 0;
+}
+
+#new-plan {
+  display:none;
+}
+
+
+.donation-stack {
+  width:30px;
+  background-color:red;
+  display:inline-block;
+  margin: 0 5px;
+  padding:5px 0 0 0 ;
+  vertical-align: bottom;
+  text-align: center;
+  color: white;
+  font-size: 11px;
+
+}
