@@ -39,6 +39,24 @@
       <%= donation.amount %>
     <% end %>
   </div>
+
+  <div class="large-4 columns">
+    <h4>Add Donation Plan</h4>
+    <%= form_for [@charity, @plan] do |f| %>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.label :amount %>
+      <%= f.text_field :amount %>
+
+      <%= f.label :interval %>
+      <%= f.select :interval, options_for_select([['Monthly', 'month'], ['Yearly', 'year'], ['Weekly', 'week']]) %>
+
+      <%= f.submit 'Submit', class: 'button tiny' %>
+    <% end %>
+
+  </div>
+
 </div>
 
 
