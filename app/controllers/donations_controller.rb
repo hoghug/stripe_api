@@ -22,7 +22,7 @@ class DonationsController < ApplicationController
 private
 
   def donation_params
-    params.require(:donation).permit(:amount)
+    params.require(:donation).permit(:amount, :stripe_token)
   end
 
 end
