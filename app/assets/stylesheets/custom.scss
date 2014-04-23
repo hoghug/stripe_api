@@ -53,16 +53,30 @@ h1, h2 {
   display:none;
 }
 
+#donations {
+  h4 {
+    margin:10px 0;
+    color: $lt-green;
+    span {
+      color: $blue;
+    }
+  }
 
-.donation-stack {
-  width:30px;
-  background-color:red;
-  display:inline-block;
-  margin: 0 5px;
-  padding:5px 0 0 0 ;
-  vertical-align: bottom;
-  text-align: center;
-  color: white;
-  font-size: 11px;
+  .donation-stack {
+    width:30px;
+    background-color:$lt-green;
+    display:inline-block;
+    margin: 0 5px;
+    padding:5px 0 0 0 ;
+    vertical-align: bottom;
+    text-align: center;
+    color: $purple;
+    font-size: 11px;
+
+    &:hover {
+      background-color: $dk-green;
+      color: white;
+    }
+  }
 
 }

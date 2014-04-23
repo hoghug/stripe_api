@@ -22,6 +22,9 @@
 
             <%= form_for [@charity, @donation] do |f| %>
               <span class="payment-errors"></span>
+
+              <%= f.hidden_field :user_id, value: current_user.id %>
+
               <%= f.label :amount %>
               <%= f.number_field :amount %>
 
@@ -56,7 +59,8 @@
 
             <h4>Total Money Raised: <span>$<%= @charity.donations.sum(:amount) %></span></h4>
             <% @charity.donations.each do |donation| %>
-              <div class="donation-stack" style="height:<%= donation.amount %>px;">
+
+              <div style="height:<%= donation.amount %>px;" data-tooltip class="donation-stack has-tip [tip-top] [radius round]" title="<%= donation.created_at.strftime('%m/%d') %>">
                 <%= donation.amount %>
               </div>
             <% end %>
@@ -69,7 +73,15 @@
           <div class="large-4 columns">
             <h4>Subscription Plans</h4>
             <ul><% @plans.each do |plan| %>
-              <li><%= plan.name %> - $<%= plan.amount.to_i %>/<%= plan.interval %></li>
+              <li>
+                <%= plan.name %> - $<%= plan.amount.to_i %>/<%= plan.interval %>
+                <% if @subscribers.include?(plan.id) %>
+                  <% @subscriber = Subscriber.find_by(plan_id: plan.id, user_id: current_user.id) %>
+                  <%= link_to '', charity_plan_subscriber_path(@charity, plan, @subscriber), method: 'delete', class: 'glyphicon glyphicon-heart' %>
+                <% else %>
+                  <%= link_to '', charity_plan_subscribers_path(@charity, plan, user_id: current_user.id), method: 'post', class: 'glyphicon glyphicon-heart-empty' %>
+                <% end %>
+              </li>
             <% end %>
             </ul>
             <a href="#" id="new-plan-btn" class="button tiny">+ Add Plan</a>

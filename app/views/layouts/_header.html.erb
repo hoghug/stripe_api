@@ -1,0 +1,27 @@
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="/">Take My Money</a></h1>
+    </li>
+    <li class="toggle-topbar menu-icon"><a href="/">Menu</a></li>
+  </ul>
+
+  <section class="top-bar-section">
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <% if user_signed_in? %>
+        <li><%= link_to 'Charities', charities_path %></li>
+        <li class="has-dropdown">
+          <%= link_to current_user.name, user_path(current_user) %>
+          <ul class="dropdown">
+            <li><a data-method="delete" href="/users/sign_out">Log Out</a></li>
+            <li><a href="/users/edit">Settings</a></li>
+          </ul>
+        </li>
+    <% else %>
+      <li><a href="/users/sign_in">Login</a></li>
+      <li><a href="/users/sign_up">Sign Up</a></li>
+    <% end %>
+    </ul>
+  </section>
+</nav>

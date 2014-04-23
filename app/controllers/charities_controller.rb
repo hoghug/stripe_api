@@ -23,6 +23,7 @@ class CharitiesController < ApplicationController
     @donation = Donation.new
     @plan = Plan.new
     @plans = Plan.all
+    @subscribers = current_user.subscribers.pluck(:plan_id)
   end
 
   def destroy

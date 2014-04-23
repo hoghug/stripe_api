@@ -1,5 +1,7 @@
 class Plan < ActiveRecord::Base
   belongs_to :charity
+  has_many :subscribers
+
 
   before_create :stripe_plan_maker
   after_save :slugger
