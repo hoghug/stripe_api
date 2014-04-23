@@ -1,0 +1,16 @@
+<h3><%= @charity.name %></h3>
+
+<p><%= @charity.description %></p>
+
+<h3>Make a Donation to <%= @charity.name %></h3>
+
+<%= form_for [@charity, @donation] do |f| %>
+  <%= f.label :amount %>
+  <%= f.number_field :amount %>
+  <%= f.submit 'Submit', class: "button-tiny" %>
+<% end %>
+
+<h4>Previous Donations</h4>
+<% @charity.donations.each do |donation| %>
+  <%= donation.amount %>
+<% end %>

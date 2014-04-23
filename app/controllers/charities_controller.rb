@@ -20,6 +20,7 @@ class CharitiesController < ApplicationController
 
   def show
     @charity = Charity.find(params[:id])
+    @donation = Donation.new
   end
 
   def destroy
