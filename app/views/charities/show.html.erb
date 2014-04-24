@@ -74,13 +74,7 @@
             <h4>Subscription Plans</h4>
             <ul><% @plans.each do |plan| %>
               <li>
-                <%= plan.name %> - $<%= plan.amount.to_i %>/<%= plan.interval %>
-                <% if @subscribers.include?(plan.id) %>
-                  <% @subscriber = Subscriber.find_by(plan_id: plan.id, user_id: current_user.id) %>
-                  <%= link_to '', charity_plan_subscriber_path(@charity, plan, @subscriber), method: 'delete', class: 'glyphicon glyphicon-heart' %>
-                <% else %>
-                  <%= link_to '', charity_plan_subscribers_path(@charity, plan, user_id: current_user.id), method: 'post', class: 'glyphicon glyphicon-heart-empty' %>
-                <% end %>
+                <a class="new-subscription" href="#" data-reveal-id="subModal" data-reveal data-form-action="<%= charity_plan_subscribers_path(@charity, plan, user_id: current_user.id) %>"><%= plan.name %> - $<%= plan.amount.to_i %>/<%= plan.interval %></a>
               </li>
             <% end %>
             </ul>
@@ -99,7 +93,6 @@
                 <%= f.submit 'Submit', class: 'button tiny' %>
               <% end %>
             </div>
-
           </div>
         </div>
       </div>
@@ -108,38 +101,88 @@
 
 </div>
 
+<div id="subModal" class="reveal-modal" data-reveal>
+  <form id="new_subscriber" action="" method="post">
+    <span class="payment-errors"></span>
+    <label>
+      Card Number
+      <input type="text" size="20" data-stripe="number"/>
+    </label>
+
+    <label>Card Expiration</label>
+    <div class="row">
+      <div class="large-4 columns" >
+        <div class="row">
+            <div class="large-6 columns" >
+              <input type="text" size="2" data-stripe="exp-month" placeholder="MM" />
+            </div>
+            <div class="large-6 columns" >
+              <input type="text" size="4" data-stripe="exp-year" placeholder="YYYY" />
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="subscriber-btn" class="button tiny">Submit</button>
+
+
+
+  </form>
+</div>
+
 
 
 
 <script type="text/javascript">
   $(document).ready(function() {
+
+    $('.new-subscription').on('click', function() {
+      $('#new_subscriber').attr('action', $(this).data('form-action'))
+    })
+
+
     $('#new_donation').submit(function(event) {
       var $form = $(this);
-
-      // Disable the submit button to prevent repeated clicks
       $form.find('#submit-btn').prop('disabled', true);
-
       Stripe.card.createToken($form, stripeResponseHandler);
-
-      // Prevent the form from submitting with the default action
       return false;
     });
+
     var stripeResponseHandler = function(status, response) {
       var $form = $('#new_donation');
 
       if (response.error) {
-        // Show the errors on the form
         $form.find('.payment-errors').text(response.error.message);
         $form.find('#submit-btn').prop('disabled', false);
       } else {
-        // token contains id, last4, and card type
         var token = response.id;
-        // Insert the token into the form so it gets submitted to the server
         $form.append($('<input type="hidden" name="donation[stripe_token]" />').val(token));
-        // and submit
         $form.get(0).submit();
       }
     };
+
+    $('#new_subscriber').submit(function(event) {
+      var $form = $(this);
+      $form.find('#subscriber-btn').prop('disabled', true);
+      Stripe.card.createToken($form, stripeResponseHandlerSubscriber);
+      return false;
+    });
+
+    var stripeResponseHandlerSubscriber = function(status, response) {
+      var $form = $('#new_subscriber');
+
+      if (response.error) {
+        $form.find('.payment-errors').text(response.error.message);
+        $form.find('#subscriber-btn').prop('disabled', false);
+      } else {
+        var token = response.id;
+        $form.append($('<input type="hidden" name="subscriber[stripe_token]" />').val(token));
+        $form.get(0).submit();
+      }
+    };
+
+
+
   });
 
 </script>
